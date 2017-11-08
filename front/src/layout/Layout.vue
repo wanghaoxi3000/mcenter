@@ -49,9 +49,11 @@ export default {}
     border-top-style: solid;
     border-top-width: 1px;
     border-top-color: #d7dde4;
+    padding: 10px 0;
 
     .layout-logo {
-      width: 40%;
+      max-width: 300px;
+      width: 60%;
       height: auto;
       display: block;
       margin: 0 auto;
