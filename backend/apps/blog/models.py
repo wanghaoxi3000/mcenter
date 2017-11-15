@@ -2,6 +2,7 @@ import re
 from datetime import datetime
 
 from django.db import models
+from markdown import markdown
 from pypinyin import lazy_pinyin
 
 
@@ -58,7 +59,7 @@ class Entry(models.Model):
         自动生成拼音slug
         """
         # 空格转下划线
-        title = self.title.split('.')[0].replace(' ', '_').lower()
+        title = self.title.replace(' ', '_').lower()
         # 去除转载等标识
         type_index = title.find(']')
         if type_index > 0:
@@ -69,3 +70,6 @@ class Entry(models.Model):
         name_pinyin = lazy_pinyin(title)
         self.slug = '_'.join(name_pinyin)
         super(Entry, self).save(*args, **kwargs)
+
+    def get_html_content(self):
+        return markdown(self.content)

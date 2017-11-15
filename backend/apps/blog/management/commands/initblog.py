@@ -31,7 +31,8 @@ class Command(BaseCommand):
                     with open(os.path.join(dirpath, item), encoding='utf8') as f:
                         time = os.path.getmtime(os.path.join(dirpath, item))
                         timestamp = datetime.utcfromtimestamp(time)
+                        title = item.split('.')[0]
                         Entry.objects.create(category=cate, own=own, published=published, timestamp=timestamp,
-                                             title=item, content=f.read())
+                                             title=title, content=f.read())
 
         self.stdout.write('Successfully insert blog data')
