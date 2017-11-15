@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
-import shutil
-import zipfile
+from datetime import datetime
 
 from django.core.management.base import BaseCommand
+
+from backend.settings import BASE_DIR
+from blog.models import Category, Entry
 
 
 class Command(BaseCommand):
@@ -14,28 +16,22 @@ class Command(BaseCommand):
     help = 'Insert blog data to database'
 
     def handle(self, *args, **options):
-        zip_file = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'blogmd.zip')
-        unzip_path = self.unzip_files(zip_file)
+        data_path = os.path.join(BASE_DIR, 'init')
+        for dirpath, dirnames, filenames in os.walk(data_path):
+            if len(filenames) > 0:
+                if len(dirnames) == 0:
+                    cate, created = Category.objects.get_or_create(name=dirpath.split(os.sep)[-1])
+                    published = True
+                else:
+                    cate = None
+                    published = False
 
-        self.stdout.write('Successfully insert blog data from "%s"' % unzip_path)
+                for item in filenames:
+                    own = True if item.find('[转载]') < 0 else False
+                    with open(os.path.join(dirpath, item), encoding='utf8') as f:
+                        time = os.path.getmtime(os.path.join(dirpath, item))
+                        timestamp = datetime.utcfromtimestamp(time)
+                        Entry.objects.create(category=cate, own=own, published=published, timestamp=timestamp,
+                                             title=item, content=f.read())
 
-    @staticmethod
-    def unzip_files(file_path):
-        extract_dir = file_path.split('.')[0]
-        # extract_path = os.path.abspath(os.path.dirname(file_path))
-        # if os.path.exists(extract_dir):
-        #     shutil.rmtree(extract_dir)
-        zipfp = zipfile.ZipFile(file_path)
-        for name in zipfp.namelist():
-            utf8name = os.path.join(extract_dir, name.encode('cp437').decode('gbk').encode('utf-8').decode('utf-8'))
-            pathname = os.path.dirname(utf8name)
-            if not os.path.exists(pathname) and pathname != "":
-                os.makedirs(pathname)
-            data = zipfp.read(name)
-            if not os.path.exists(utf8name):
-                fo = open(utf8name, "w", encoding='utf-8')
-                fo.write(data.decode('utf-8'))
-                fo.close()
-        zipfp.close()
-
-        return extract_dir
+        self.stdout.write('Successfully insert blog data')
