@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.db import models
+from pypinyin import lazy_pinyin
 
 
 class Category(models.Model):
@@ -17,6 +18,14 @@ class Category(models.Model):
     def __str__(self):
         return '%s' % self.name
 
+    def save(self, *args, **kwargs):
+        """
+        自动生成拼音slug
+        """
+        name_pinyin = lazy_pinyin(self.name)
+        self.slug = '_'.join(name_pinyin)
+        super(Category, self).save(*args, **kwargs)
+
 
 class Entry(models.Model):
     """
@@ -31,7 +40,7 @@ class Entry(models.Model):
     title = models.CharField('标题', max_length=255)
     slug = models.SlugField(unique=True)
     content = models.TextField('内容')
-    timestamp = models.DateTimeField('发布时间', default=datetime.now, db_index=True)
+    timestamp = models.DateTimeField('时间戳', default=datetime.now, db_index=True)
     read_num = models.IntegerField('阅读次数', default=0, editable=False)
 
     class Meta:
@@ -42,3 +51,11 @@ class Entry(models.Model):
 
     def __str__(self):
         return '%s' % self.title
+
+    def save(self, *args, **kwargs):
+        """
+        自动生成拼音slug
+        """
+        name_pinyin = lazy_pinyin(self.title)
+        self.slug = '_'.join(name_pinyin)
+        super(Entry, self).save(*args, **kwargs)
