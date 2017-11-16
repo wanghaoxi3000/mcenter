@@ -73,3 +73,10 @@ class Entry(models.Model):
 
     def get_html_content(self):
         return markdown(self.content)
+
+    def get_synopsis(self):
+        synopsis = self.content[:100]
+        last_section_index = synopsis.rfind('\n')
+        if last_section_index > 0:
+            synopsis = synopsis[:last_section_index]
+        return markdown(synopsis)

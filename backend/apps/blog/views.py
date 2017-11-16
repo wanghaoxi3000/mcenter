@@ -7,7 +7,7 @@ from .serializers import EntrySerializer
 
 class EntryViewSet(viewsets.ModelViewSet):
     serializer_class = EntrySerializer
-    queryset = Entry.objects.all()
+    queryset = Entry.objects.all().filter(published=True)
     lookup_field = 'slug'
     lookup_value_regex = r'\w+'
 

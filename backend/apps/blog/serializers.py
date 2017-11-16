@@ -7,7 +7,7 @@ from .models import Entry
 
 class EntrySerializer(serializers.HyperlinkedModelSerializer):
     category = serializers.CharField(source='category.name')
-    timestamp = serializers.DateTimeField(format='%y-%m-%d %H:%M:%S')
+    timestamp = serializers.DateTimeField(format='%Y-%m-%d %H:%M')
     html = serializers.CharField(source='get_html_content', read_only=True)
 
     class Meta:

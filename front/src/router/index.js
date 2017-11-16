@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '@/Layout/Layout'
 import Documents from '@/views/Documents'
+import Article from '@/views/Article'
 
 Vue.use(Router)
 
@@ -13,7 +14,8 @@ export default new Router({
       component: Layout,
       redirect: '/documents',
       children: [
-        { path: 'documents', component: Documents }
+        { path: 'documents', component: Documents },
+        { path: 'documents/:slug', component: Article }
       ]
     }
   ]

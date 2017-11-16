@@ -62,6 +62,7 @@ export default {}
       text-align: center;
       padding: 10px;
       color: #9ea7b4;
+      cursor: default;
     }
   }
 }

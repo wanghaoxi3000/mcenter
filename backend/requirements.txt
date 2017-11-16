@@ -1,4 +1,5 @@
 django
 djangorestframework
+django-cors-headers
 pypinyin
 markdown

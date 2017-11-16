@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <h1>{{ itemInfo.title }}</h1>
+  <div class="blog-item">
+    <h1><router-link :to="itemInfo.url">{{ itemInfo.title }}</router-link></h1>
     <p class="blog-abstract">{{ itemInfo.synopsis }}</p>
     <div class="blog-info">
       <Icon type="bookmark" /> {{ itemInfo.category }}
       &nbsp&nbsp
-      <Icon type="ios-clock" /> {{ itemInfo.time }}
+      <Icon type="ios-clock" /> {{ itemInfo.timestamp }}
     </div>
   </div>
 </template>
@@ -17,17 +17,25 @@ export default {
       type: Object,
       default() {
         return {
+          url: 'documents/test',
           title: '文章标题',
           synopsis: '文章摘要',
           category: '编程技术',
-          time: '1974-02-06 21:09' }
+          timestamp: '1974-02-06 21:09'
+        }
       }
     }
   }
 }
 </script>
 
-<style scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
+.blog-item{
+  margin: 0;
+  padding: 0;
+  a{
+    color: #495060;
+  }
   .blog-abstract {
     font-size: 16px;
     margin: 10px 0;
@@ -35,4 +43,5 @@ export default {
   .blog-info {
     font-size: 13px;
   }
+}
 </style>
