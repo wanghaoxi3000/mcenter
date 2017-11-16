@@ -72,7 +72,11 @@ class Entry(models.Model):
         super(Entry, self).save(*args, **kwargs)
 
     def get_html_content(self):
-        return markdown(self.content)
+        return markdown(self.content,
+                        extensions=['markdown.extensions.tables',
+                                    'markdown.extensions.fenced_code',
+                                    'markdown.extensions.codehilite']
+                        )
 
     def get_synopsis(self):
         synopsis = self.content[:100]

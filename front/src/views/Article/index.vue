@@ -1,14 +1,14 @@
 <template>
   <div class="blog-article">
     <Row type="flex" justify="center">
-      <Col :xs="22" :sm="18" :md="14" :lg="12">
+      <Col :xs="22" :sm="20" :md="18" :lg="16">
         <h1 class="title">{{title}}</h1>
         <div class="info">
           <Icon type="bookmark" /> {{ category }}
           &nbsp&nbsp
           <Icon type="ios-clock" /> {{ timestamp }}
           <br>
-          <div class="body" v-html="content"></div>
+          <article class="markdown-body" v-html="content"></article>
         </div>
       </Col>
     </Row>
@@ -43,6 +43,9 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+@import "~github-markdown-css/github-markdown.css";
+@import "../../styles/codehilite.css";
+
 .blog-article {
   text-align: center;
   .title {
@@ -52,9 +55,18 @@ export default {
   .info {
     font-size: 16px;
   }
-  .body {
-    font-size: 18px;
+
+  .markdown-body {
     text-align: left;
+    padding: 45px 15px;
+    margin-top: 15px;
+    border-top: 1px solid #dddee1;
+
+    @media (max-width: 767px) {
+      .markdown-body {
+        padding: 15px 0;
+      }
+    }
   }
 }
 </style>
