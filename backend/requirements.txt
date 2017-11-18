@@ -1,5 +1,6 @@
-django
+django<2
 djangorestframework
 django-cors-headers
 pypinyin
 markdown
+pygments

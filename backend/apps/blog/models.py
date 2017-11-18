@@ -2,8 +2,8 @@ import re
 from datetime import datetime
 
 from django.db import models
-from markdown import markdown
 from pypinyin import lazy_pinyin
+import markdown
 
 
 class Category(models.Model):
@@ -33,6 +33,14 @@ class Entry(models.Model):
     """
     博客文章
     """
+    md = markdown.Markdown(output_format='html5', extensions=['fenced_code', 'codehilite', 'tables'],
+                           extension_configs={
+                               'codehilite': {
+                                    'linenums': False,      # 行号在github-markdown-css下显示效果不太好
+                                    'guess_lang': False     # 代码猜测不够准确
+                                }
+                           })
+
     owner = ((True, '原创'), (False, '转载'))
     publish = ((True, '发布'), (False, '草稿'))
 
@@ -63,7 +71,7 @@ class Entry(models.Model):
         # 去除转载等标识
         type_index = title.find(']')
         if type_index > 0:
-            title = title[type_index+1:]
+            title = title[type_index + 1:]
         # 删除非单词字符
         title = re.sub(r'\W+', '', title)
         # 汉字转拼音
@@ -72,15 +80,11 @@ class Entry(models.Model):
         super(Entry, self).save(*args, **kwargs)
 
     def get_html_content(self):
-        return markdown(self.content,
-                        extensions=['markdown.extensions.tables',
-                                    'markdown.extensions.fenced_code',
-                                    'markdown.extensions.codehilite']
-                        )
+        return self.md.reset().convert(self.content)
 
-    def get_synopsis(self):
-        synopsis = self.content[:100]
-        last_section_index = synopsis.rfind('\n')
-        if last_section_index > 0:
-            synopsis = synopsis[:last_section_index]
-        return markdown(synopsis)
+    # def get_synopsis(self):
+    #     synopsis = self.content[:100]
+    #     last_section_index = synopsis.rfind('\n')
+    #     if last_section_index > 0:
+    #         synopsis = synopsis[:last_section_index]
+    #     return markdown(synopsis)

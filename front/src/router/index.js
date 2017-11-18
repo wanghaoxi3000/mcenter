@@ -14,7 +14,7 @@ export default new Router({
       component: Layout,
       redirect: '/documents',
       children: [
-        { path: 'documents', component: Documents },
+        { path: 'documents', component: Documents, alias: '/' },
         { path: 'documents/:slug', component: Article }
       ]
     }
