@@ -2,7 +2,7 @@
     <div class="layout">
         <Menu mode="horizontal" theme="dark" active-name="1">
             <div class="layout-nav">
-              <router-link to="/documents">
+              <router-link :to="{name: 'blog'}">
                 <MenuItem name="1">
                     <Icon type="chatbubble-working"></Icon>
                     文章

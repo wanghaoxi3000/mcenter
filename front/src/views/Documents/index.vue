@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <keep-alive>
     <Row>
       <Col offset="4" span="14">
 
@@ -9,8 +10,8 @@
           </div>
         </template>
 
-        <Page class-name="blog-page" show-elevator :total="pageCount" :page-size="5"
-              @on-change="getArticleList"></Page>
+        <Page class-name="blog-page" show-elevator :total="blogCount" :page-size="5" :current="currentPage"
+              @on-change="pageChange"></Page>
 
       </Col>
 
@@ -18,6 +19,7 @@
 
       </Col>
     </Row>
+    </keep-alive>
   </div>
 </template>
 
@@ -32,23 +34,33 @@ export default {
   data() {
     return {
       blogItem: {},
-      pageCount: 0
+      blogCount: 0,
+      currentPage: 1
     }
   },
   created() {
-    this.getArticleList()
+    this.getArticleList(this.$route.params.page)
   },
   methods: {
     getArticleList(page = 1) {
       articles(page).then(res => {
         this.blogItem = res.data.results.map((item) => {
-          item.url = 'documents/' + item.url.split('/', 5).pop()
+          item.slug = item.url.split('/', 5).pop()
           return item
         })
-        this.pageCount = res.data.count
+        this.blogCount = res.data.count
+        this.currentPage = Number(page)
       })
+    },
+
+    pageChange(val) {
+      this.$router.push({ path: `/documents/page/${val}/` })
     }
-  }
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.getArticleList(to.params.page)
+    next()
+  },
 }
 </script>
 
@@ -61,7 +73,7 @@ export default {
     padding-top: 25px;
   }
 }
-.blog-page{
+.blog-page {
   text-align: center;
   margin-top: 15px;
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="blog-item">
-    <h1><router-link :to="itemInfo.url">{{ itemInfo.title }}</router-link></h1>
+    <h1><router-link :to="{name: 'article', params: {slug: itemInfo.slug}}">{{ itemInfo.title }}</router-link></h1>
     <p class="blog-abstract">{{ itemInfo.synopsis }}</p>
     <div class="blog-info">
       <Icon type="bookmark" /> {{ itemInfo.category }}
@@ -17,7 +17,7 @@ export default {
       type: Object,
       default() {
         return {
-          url: 'documents/test',
+          slug: '',
           title: '文章标题',
           synopsis: '文章摘要',
           category: '编程技术',

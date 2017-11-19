@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-article">
+  <div class="app-container">
     <Row type="flex" justify="center">
       <Col :xs="22" :sm="20" :md="18" :lg="16">
         <h1 class="title">{{title}}</h1>
@@ -43,10 +43,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-@import "~github-markdown-css/github-markdown.css";
-@import "../../styles/codehilite.css";
-
-.blog-article {
+.app-container {
   text-align: center;
   .title {
     font-size: 36px;
@@ -55,18 +52,26 @@ export default {
   .info {
     font-size: 16px;
   }
+}
+</style>
 
-  .markdown-body {
-    text-align: left;
-    padding: 45px 15px;
-    margin-top: 15px;
-    border-top: 1px solid #dddee1;
+<style rel="stylesheet/scss" lang="scss">
+@import "~github-markdown-css/github-markdown.css";
+@import "../../styles/codehilite.css";
+.markdown-body {
+  text-align: left;
+  padding: 45px 15px;
+  margin-top: 15px;
+  border-top: 1px solid #dddee1;
 
-    @media (max-width: 767px) {
-      .markdown-body {
-        padding: 15px 0;
-      }
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px 0;
     }
+  }
+
+  pre {
+    background-color: rgba(27, 31, 35, 0.05);
   }
 }
 </style>
