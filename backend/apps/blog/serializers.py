@@ -2,7 +2,15 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
 
-from .models import Entry
+from .models import Category, Entry
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    count = serializers.IntegerField(source='get_entry_count', read_only=True)
+
+    class Meta:
+        model = Category
+        fields = ('name', 'slug', 'count')
 
 
 class EntrySerializer(serializers.HyperlinkedModelSerializer):
@@ -12,7 +20,7 @@ class EntrySerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Entry
-        fields = ('url', 'title', 'category', 'timestamp', 'html')
+        fields = ('url', 'title', 'category', 'slug', 'timestamp', 'html')
         extra_kwargs = {
             'url': {'view_name': 'blog:entry-detail', 'lookup_field': 'slug'}
         }

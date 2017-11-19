@@ -2,7 +2,8 @@
   <div class="app-container">
     <keep-alive>
     <Row>
-      <Col offset="4" span="14">
+      <Col :xs="{offset: 1, span: 22}"
+        :sm="{offset: 3, span: 14}">
 
         <template v-for="(item, index) in blogItem" >
           <div class="blog-item" :class="index != 0 ? 'blog-item-li' : ''" :key="item.index">
@@ -15,8 +16,9 @@
 
       </Col>
 
-      <Col span="4">
-
+      <Col :xs="{offset: 1, span: 22}"
+        :sm="{offset:1, span:4}">
+        <item-list title="文章类别"></item-list>
       </Col>
     </Row>
     </keep-alive>
@@ -24,12 +26,14 @@
 </template>
 
 <script>
-import { articles } from '../../api/documents'
+import { articles, categories } from '../../api/documents'
 import DocumentItem from './DocumentItem'
+import itemList from './itemList'
 
 export default {
   components: {
-    DocumentItem
+    DocumentItem,
+    itemList
   },
   data() {
     return {
@@ -40,17 +44,23 @@ export default {
   },
   created() {
     this.getArticleList(this.$route.params.page)
+    this.getCategoryList()
   },
   methods: {
     getArticleList(page = 1) {
       articles(page).then(res => {
         this.blogItem = res.data.results.map((item) => {
-          item.slug = item.url.split('/', 5).pop()
+          item.slug = item.slug
           return item
         })
         this.blogCount = res.data.count
         this.currentPage = Number(page)
       })
+    },
+
+    async getCategoryList() {
+      const { data } = await categories()
+      console.log(data)
     },
 
     pageChange(val) {

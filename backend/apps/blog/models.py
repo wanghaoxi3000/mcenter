@@ -24,9 +24,17 @@ class Category(models.Model):
         """
         自动生成拼音slug
         """
-        name_pinyin = lazy_pinyin(self.name)
-        self.slug = '_'.join(name_pinyin)[:100]
+        # 空格转下划线
+        slug = self.name.replace(' ', '_').lower()
+        # 删除非单词字符
+        slug = re.sub(r'\W+', '', slug)
+        # 汉字转拼音
+        slug = lazy_pinyin(slug)
+        self.slug = '_'.join(slug)[:100]
         super(Category, self).save(*args, **kwargs)
+
+    def get_entry_count(self):
+        return self.entry_set.select_related().count()
 
 
 class Entry(models.Model):
