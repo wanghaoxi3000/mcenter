@@ -18,7 +18,7 @@
 
       <Col :xs="{offset: 1, span: 22}"
         :sm="{offset:1, span:4}">
-        <item-list title="文章类别"></item-list>
+        <item-list title="文章分类" :items="categories" @select="categorySelect"></item-list>
       </Col>
     </Row>
     </keep-alive>
@@ -38,17 +38,27 @@ export default {
   data() {
     return {
       blogItem: {},
+      categoryList: [],
       blogCount: 0,
       currentPage: 1
     }
   },
+  computed: {
+    categories() {
+      let cate = []
+      for (const item of this.categoryList) {
+        cate.push(item.name)
+      }
+      return cate
+    }
+  },
   created() {
-    this.getArticleList(this.$route.params.page)
+    this.getArticleList(this.$route.params.page, this.$route.query.category)
     this.getCategoryList()
   },
   methods: {
-    getArticleList(page = 1) {
-      articles(page).then(res => {
+    getArticleList(page = 1, category) {
+      articles(page, category).then(res => {
         this.blogItem = res.data.results.map((item) => {
           item.slug = item.slug
           return item
@@ -60,7 +70,14 @@ export default {
 
     async getCategoryList() {
       const { data } = await categories()
-      console.log(data)
+      this.categoryList = data.map((val) => {
+        val.name = `${val.name} (${val.count})`
+        return val
+      })
+    },
+
+    categorySelect(index) {
+      this.$router.push({ name: 'blog', query: { category: this.categoryList[index].slug }})
     },
 
     pageChange(val) {
@@ -68,7 +85,7 @@ export default {
     }
   },
   beforeRouteUpdate(to, from, next) {
-    this.getArticleList(to.params.page)
+    this.getArticleList(to.params.page, to.query.category)
     next()
   },
 }
