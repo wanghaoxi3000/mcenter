@@ -1,9 +1,12 @@
 <template>
   <div class="blog-item">
-    <h1><router-link :to="{name: 'article', params: {slug: itemInfo.slug}}">{{ itemInfo.title }}</router-link></h1>
+    <h1><router-link class="text-link" :to="{name: 'article', params: {slug: itemInfo.slug}}">{{ itemInfo.title }}</router-link></h1>
     <p class="blog-abstract">{{ itemInfo.synopsis }}</p>
     <div class="blog-info">
-      <Icon type="bookmark" /> {{ itemInfo.category }}
+      <Icon type="bookmark" />
+      <router-link class="text-link" :to="{name: 'blog', query: { category: itemInfo.categorySlug }}">
+        {{ itemInfo.category }}
+      </router-link>
       &nbsp&nbsp
       <Icon type="ios-clock" /> {{ itemInfo.timestamp }}
     </div>
@@ -18,10 +21,10 @@ export default {
       default() {
         return {
           slug: '',
-          title: '文章标题',
-          synopsis: '文章摘要',
-          category: '编程技术',
-          timestamp: '1974-02-06 21:09'
+          title: '标题',
+          synopsis: '',
+          category: '',
+          timestamp: ''
         }
       }
     }
@@ -33,9 +36,6 @@ export default {
 .blog-item{
   margin: 0;
   padding: 0;
-  a{
-    color: #495060;
-  }
   .blog-abstract {
     font-size: 16px;
     margin: 10px 0;

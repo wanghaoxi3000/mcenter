@@ -4,7 +4,10 @@
       <Col :xs="22" :sm="20" :md="18" :lg="16">
         <h1 class="title">{{title}}</h1>
         <div class="info">
-          <Icon type="bookmark" /> {{ category }}
+          <Icon type="bookmark" />
+          <router-link class="text-link" :to="{name: 'blog', query: { category: categorySlug }}">
+            {{ category }}
+          </router-link>
           &nbsp&nbsp
           <Icon type="ios-clock" /> {{ timestamp }}
           <br>
@@ -21,9 +24,10 @@ import { articleDetail } from '../../api/documents'
 export default {
   data() {
     return {
-      title: '正文标题',
-      category: '文章类别',
-      timestamp: '2017-11-16 11:51',
+      title: '标题',
+      category: '',
+      categorySlug: '',
+      timestamp: '',
       content: ''
     }
   },
@@ -35,6 +39,7 @@ export default {
       const { data } = await articleDetail(this.$route.params.slug)
       this.title = data.title
       this.category = data.category
+      this.categorySlug = data.categorySlug
       this.timestamp = data.timestamp
       this.content = data.html
     }

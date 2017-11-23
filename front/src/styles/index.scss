@@ -2,3 +2,15 @@
     background: #f5f7f9;
     padding: 20px 0;
 }
+
+.text-link{
+ color: #495060;
+
+  &:hover {
+    color: #5cadff;
+  }
+
+  &:active {
+    color: #3091f2;
+  }
+}

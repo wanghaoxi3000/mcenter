@@ -59,10 +59,7 @@ export default {
   methods: {
     getArticleList(page = 1, category) {
       articles(page, category).then(res => {
-        this.blogItem = res.data.results.map((item) => {
-          item.slug = item.slug
-          return item
-        })
+        this.blogItem = res.data.results
         this.blogCount = res.data.count
         this.currentPage = Number(page)
       })
