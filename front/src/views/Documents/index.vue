@@ -19,6 +19,7 @@
       <Col :xs="{offset: 1, span: 22}"
         :sm="{offset:1, span:4}">
         <item-list title="文章分类" :items="categories" @select="categorySelect"></item-list>
+        <item-list title="文章归档" :items="archives" @select="archiveSelect"></item-list>
       </Col>
     </Row>
     </keep-alive>
@@ -26,7 +27,7 @@
 </template>
 
 <script>
-import { articles, categories } from '../../api/documents'
+import { articles, categories, archives } from '../../api/documents'
 import DocumentItem from './DocumentItem'
 import itemList from './itemList'
 
@@ -39,6 +40,7 @@ export default {
     return {
       blogItem: {},
       categoryList: [],
+      archiveList: [],
       blogCount: 0,
       currentPage: 1
     }
@@ -50,15 +52,23 @@ export default {
         cate.push(item.name)
       }
       return cate
+    },
+    archives() {
+      let archive = []
+      for (const item of this.archiveList) {
+        archive.push(item.name)
+      }
+      return archive
     }
   },
   created() {
-    this.getArticleList(this.$route.params.page, this.$route.query.category)
+    this.getArticleList(this.$route.params.page, this.$route.query.category, this.$route.query.archive)
     this.getCategoryList()
+    this.getArchivesList()
   },
   methods: {
-    getArticleList(page = 1, category) {
-      articles(page, category).then(res => {
+    getArticleList(page = 1, category, archive) {
+      articles(page, category, archive).then(res => {
         this.blogItem = res.data.results
         this.blogCount = res.data.count
         this.currentPage = Number(page)
@@ -73,8 +83,23 @@ export default {
       })
     },
 
+    async getArchivesList() {
+      const { data } = await archives()
+      this.archiveList = data.map((val => {
+        const time = val.record.split('-')
+        return {
+          name: `${time[0]}年${time[1]}日 (${val.num})`,
+          slug: `${time[0]}${time[1]}`
+        }
+      }))
+    },
+
     categorySelect(index) {
       this.$router.push({ name: 'blog', query: { category: this.categoryList[index].slug }})
+    },
+
+    archiveSelect(index) {
+      this.$router.push({ name: 'blog', query: { archive: this.archiveList[index].slug }})
     },
 
     pageChange(val) {
@@ -82,7 +107,7 @@ export default {
     }
   },
   beforeRouteUpdate(to, from, next) {
-    this.getArticleList(to.params.page, to.query.category)
+    this.getArticleList(to.params.page, to.query.category, this.$route.query.archive)
     next()
   },
 }
