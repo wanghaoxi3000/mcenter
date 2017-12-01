@@ -41,6 +41,8 @@ export default {
       blogItem: {},
       categoryList: [],
       archiveList: [],
+      curCategory: this.$route.query.category,
+      curArchive: this.$route.query.archive,
       blogCount: 0,
       currentPage: 1
     }
@@ -95,19 +97,33 @@ export default {
     },
 
     categorySelect(index) {
-      this.$router.push({ name: 'blog', query: { category: this.categoryList[index].slug }})
+      this.curArchive = ''
+      this.curCategory = this.categoryList[index].slug
+      this.$router.push({ name: 'blog', query: { category: this.curCategory }})
     },
 
     archiveSelect(index) {
-      this.$router.push({ name: 'blog', query: { archive: this.archiveList[index].slug }})
+      this.curCategory = ''
+      this.curArchive = this.archiveList[index].slug
+      this.$router.push({ name: 'blog', query: { archive: this.curArchive }})
     },
 
     pageChange(val) {
-      this.$router.push({ path: `/documents/page/${val}/` })
+      let query = {}
+      if (this.curCategory !== '') {
+        query.category = this.curCategory
+      }
+      if (this.curArchive !== '') {
+        query.archive = this.curArchive
+      }
+      this.$router.push({ path: `/documents/page/${val}/`, query })
     }
   },
+
   beforeRouteUpdate(to, from, next) {
-    this.getArticleList(to.params.page, to.query.category, this.$route.query.archive)
+    this.curCategory = to.query.category
+    this.curArchive = to.query.archive
+    this.getArticleList(to.params.page, to.query.category, to.query.archive)
     next()
   },
 }
