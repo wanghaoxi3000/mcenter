@@ -21,7 +21,7 @@ export default {
       default() {
         return {
           slug: '',
-          title: '标题',
+          title: '',
           synopsis: '',
           category: '',
           timestamp: ''

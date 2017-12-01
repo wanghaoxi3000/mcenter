@@ -2,7 +2,8 @@
   <div class="item-list">
     <h3 class="list-title">{{ title }}</h3>
     <div class="list-body">
-      <p class="list-item" v-for="(item, index) in items" :key="index" @click="selected(index)">
+      <p class="list-item" v-for="(item, index) in items" :key="index"
+        :class="item === active ? 'actived': ''" @click="selected(index)">
         {{ item }}
       </p>
     </div>
@@ -20,6 +21,11 @@ export default {
       type: Array,
       default() {
         return []
+      }
+    },
+    active: {
+      default() {
+        return null
       }
     }
   },
@@ -64,6 +70,10 @@ $body-height: $container-height - $title-height;
       &:active {
         color: #3091f2;
       }
+    }
+
+    .actived {
+      color: #2b85e4;
     }
   }
 }

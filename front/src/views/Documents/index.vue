@@ -18,8 +18,8 @@
 
       <Col :xs="{offset: 1, span: 22}"
         :sm="{offset:1, span:4}">
-        <item-list title="文章分类" :items="categories" @select="categorySelect"></item-list>
-        <item-list title="文章归档" :items="archives" @select="archiveSelect"></item-list>
+        <item-list title="文章分类" :items="categories" @select="categorySelect" :active="curCategory"></item-list>
+        <item-list title="文章归档" :items="archives" @select="archiveSelect" :active="curArchive"></item-list>
       </Col>
     </Row>
     </keep-alive>
@@ -41,8 +41,6 @@ export default {
       blogItem: {},
       categoryList: [],
       archiveList: [],
-      curCategory: this.$route.query.category,
-      curArchive: this.$route.query.archive,
       blogCount: 0,
       currentPage: 1
     }
@@ -61,6 +59,16 @@ export default {
         archive.push(item.name)
       }
       return archive
+    },
+    curCategory() {
+      for (const item of this.categoryList) {
+        if (item.slug === this.$route.query.category) { return item.name }
+      }
+    },
+    curArchive() {
+      for (const item of this.archiveList) {
+        if (item.slug === this.$route.query.archive) { return item.name }
+      }
     }
   },
   created() {
@@ -69,8 +77,8 @@ export default {
     this.getArchivesList()
   },
   methods: {
-    getArticleList(page = 1, category, archive) {
-      articles(page, category, archive).then(res => {
+    getArticleList(page = 1) {
+      articles(page, this.$route.query.category, this.$route.query.archive).then(res => {
         this.blogItem = res.data.results
         this.blogCount = res.data.count
         this.currentPage = Number(page)
@@ -97,34 +105,23 @@ export default {
     },
 
     categorySelect(index) {
-      this.curArchive = ''
-      this.curCategory = this.categoryList[index].slug
-      this.$router.push({ name: 'blog', query: { category: this.curCategory }})
+      this.categoryIndex = index
+      this.$router.push({ name: 'blog', query: { category: this.categoryList[index].slug }})
     },
 
     archiveSelect(index) {
-      this.curCategory = ''
-      this.curArchive = this.archiveList[index].slug
-      this.$router.push({ name: 'blog', query: { archive: this.curArchive }})
+      this.archiveIndex = index
+      this.$router.push({ name: 'blog', query: { archive: this.archiveList[index].slug }})
     },
 
     pageChange(val) {
-      let query = {}
-      if (this.curCategory !== '') {
-        query.category = this.curCategory
-      }
-      if (this.curArchive !== '') {
-        query.archive = this.curArchive
-      }
-      this.$router.push({ path: `/documents/page/${val}/`, query })
+      this.$router.push({ path: `/documents/page/${val}/`, query: this.$route.query })
     }
   },
 
   beforeRouteUpdate(to, from, next) {
-    this.curCategory = to.query.category
-    this.curArchive = to.query.archive
-    this.getArticleList(to.params.page, to.query.category, to.query.archive)
     next()
+    this.getArticleList(to.params.page)
   },
 }
 </script>
