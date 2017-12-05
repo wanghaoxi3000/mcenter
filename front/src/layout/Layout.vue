@@ -8,14 +8,18 @@
                     文章
                 </MenuItem>
               </router-link>
+              <router-link :to="{name: 'newsBoard'}">
                 <MenuItem name="2">
                     <Icon type="document-text"></Icon>
                     资讯
                 </MenuItem>
+              </router-link>
+              <router-link :to="{name: 'aboutMe'}">
                 <MenuItem name="3">
                     <Icon type="ios-information"></Icon>
                     关于
                 </MenuItem>
+              </router-link>
             </div>
         </Menu>
 
