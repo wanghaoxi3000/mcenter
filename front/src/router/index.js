@@ -4,11 +4,13 @@ import Layout from '@/Layout/Layout'
 import Documents from '@/views/Documents'
 import Article from '@/views/Article'
 import Building from '@/views/Building'
+import page404 from '@/views/errorPage/404.vue'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    { path: '/404', name: '404', component: page404 },
     {
       path: '/',
       name: 'Layout',
@@ -34,6 +36,8 @@ export default new Router({
       children: [
         { path: 'index', name: 'aboutMe', component: Building }
       ]
-    }
+    },
+
+    { path: '*', redirect: '/404', hidden: true }
   ]
 })
