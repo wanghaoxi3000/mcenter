@@ -27,6 +27,11 @@ python manage.py runserver
 - MYSQL_PORT_3306_TCP_ADDR 连接地址
 - MYSQL_PORT_3306_TCP_PORT 端口号
 
+归集静态文件
+```
+python manage.py collectstatic
+```
+
 然后重新运行`python manage.py migrate`初始化数据库
 可以通过在一个脚本中使用`export`命令来快速完成这些操作，并在此后启动uwsgi等服务器
 
