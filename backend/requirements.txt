@@ -4,3 +4,4 @@ django-cors-headers
 pypinyin
 markdown
 pygments
+pymysql

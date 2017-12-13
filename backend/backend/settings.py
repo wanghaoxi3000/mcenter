@@ -25,9 +25,9 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 SECRET_KEY = ')7!fmzytft%egd8)8rr+7qrhpdz)#(mk393px5(k*$37jm)kpo'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG_STATUS', True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -81,12 +81,28 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+SQLITE_DB = {
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 }
+
+MYSQL_DB = {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('MYSQL_INSTANCE_NAME'),
+        'USER': os.getenv('MYSQL_USERNAME'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
+        'HOST': os.getenv('MYSQL_PORT_3306_TCP_ADDR'),
+        'PORT': os.getenv('MYSQL_PORT_3306_TCP_PORT')
+}
+
+DJANGO_DB_TYPE = os.getenv('DJANGO_DB_TYPE', 'sqlite')
+
+DATABASES = {}
+
+if DJANGO_DB_TYPE == 'sqlite':
+    DATABASES['default'] = SQLITE_DB
+elif DJANGO_DB_TYPE == 'mysql':
+    DATABASES['default'] = MYSQL_DB
 
 
 # Password validation
