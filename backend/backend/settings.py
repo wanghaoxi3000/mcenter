@@ -25,7 +25,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 SECRET_KEY = ')7!fmzytft%egd8)8rr+7qrhpdz)#(mk393px5(k*$37jm)kpo'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG_STATUS', True)
+DEBUG = False if os.getenv('DJANGO_PROD_STATUS', None) else True
 
 ALLOWED_HOSTS = ['*']
 
