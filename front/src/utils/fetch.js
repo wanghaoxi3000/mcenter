@@ -1,9 +1,11 @@
 import axios from 'axios'
 
+// 从环境变量中获取API_ROOT
+const serverURL = process.env.API_ROOT
+
 // 创建axios实例
 const service = axios.create({
-  // baseURL: 'https://easy-mock.com/mock/59fd94a56b54331215b423ce',
-  baseURL: 'http://localhost:8000',
+  baseURL: serverURL,
   timeout: 15000
 })
 
