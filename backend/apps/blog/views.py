@@ -35,7 +35,6 @@ class EntryViewSet(viewsets.ModelViewSet):
         if category is not None:
             query_set = query_set.filter(category__slug=category)
         if archive is not None:
-            print('123123', archive)
             if len(archive) != 6:
                 raise ParseError
             query_set = query_set.filter(timestamp__year=archive[:4], timestamp__month=archive[4:6])

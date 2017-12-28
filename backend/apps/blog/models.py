@@ -11,7 +11,7 @@ class Category(models.Model):
     每篇文章属于一个类别
     """
     name = models.CharField('名称', max_length=255, unique=True)
-    slug = models.SlugField(unique=True, max_length=100)
+    slug = models.SlugField(unique=True, max_length=100, editable=False)
 
     class Meta:
         verbose_name = "类别"
@@ -56,7 +56,7 @@ class Entry(models.Model):
     own = models.BooleanField('属性', choices=owner, default=True)
     published = models.BooleanField('状态', choices=publish, default=False)
     title = models.CharField('标题', max_length=255)
-    slug = models.SlugField(unique=True, max_length=100)
+    slug = models.SlugField(unique=True, max_length=100, editable=False)
     content = models.TextField('内容')
     timestamp = models.DateTimeField('时间戳', default=datetime.now, db_index=True)
     read_num = models.IntegerField('阅读次数', default=0, editable=False)
