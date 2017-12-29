@@ -18,10 +18,11 @@ class EntrySerializer(serializers.HyperlinkedModelSerializer):
     categorySlug = serializers.CharField(source='category.slug', read_only=True)
     timestamp = serializers.DateTimeField(format='%Y-%m-%d %H:%M')
     html = serializers.CharField(source='get_html_content', read_only=True)
+    synopsis = serializers.CharField(source='get_synopsis', read_only=True)
 
     class Meta:
         model = Entry
-        fields = ('url', 'title', 'category', 'categorySlug', 'slug', 'timestamp', 'html')
+        fields = ('url', 'title', 'category', 'categorySlug', 'slug', 'timestamp', 'html', 'synopsis')
         extra_kwargs = {
             'url': {'view_name': 'blog:entry-detail', 'lookup_field': 'slug'}
         }

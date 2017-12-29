@@ -45,7 +45,10 @@ class EntryViewSet(viewsets.ModelViewSet):
         获取到文章详情后设置detail=True，排除部分序列化数据
         """
         instance = self.get_object()
+        instance.read_num += 1
+        instance.save()
         serializer = self.get_serializer(instance, detail=True)
+
         return Response(serializer.data)
 
     @list_route(url_path='date-archive')

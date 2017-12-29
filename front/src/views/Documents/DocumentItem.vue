@@ -1,7 +1,7 @@
 <template>
   <div class="blog-item">
     <h1><router-link class="text-link" :to="{name: 'article', params: {slug: itemInfo.slug}}">{{ itemInfo.title }}</router-link></h1>
-    <p class="blog-abstract">{{ itemInfo.synopsis }}</p>
+    <p class="blog-abstract" v-html="itemInfo.synopsis"></p>
     <div class="blog-info">
       <Icon type="bookmark" />
       <router-link class="text-link" :to="{name: 'blog', query: { category: itemInfo.categorySlug }}">

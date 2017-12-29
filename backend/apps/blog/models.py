@@ -16,6 +16,7 @@ class Category(models.Model):
     class Meta:
         verbose_name = "类别"
         verbose_name_plural = verbose_name
+        ordering = ['name', 'id']
 
     def __str__(self):
         return '%s' % self.name
@@ -90,9 +91,16 @@ class Entry(models.Model):
     def get_html_content(self):
         return self.md.reset().convert(self.content)
 
-    # def get_synopsis(self):
-    #     synopsis = self.content[:100]
-    #     last_section_index = synopsis.rfind('\n')
-    #     if last_section_index > 0:
-    #         synopsis = synopsis[:last_section_index]
-    #     return markdown(synopsis)
+    def get_synopsis(self):
+        synopsis = []
+        word_num = 0
+        for line in self.content.splitlines(keepends=True):
+            if re.match(r'\w+|[\u4e00-\u9fa5]+', line):
+                synopsis.append(line)
+                word_num += len(line)
+            if word_num > 100 or len(synopsis) > 4:
+                break
+
+        synopsis = ''.join(synopsis)
+
+        return self.md.reset().convert(synopsis)
