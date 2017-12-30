@@ -92,13 +92,22 @@ class Entry(models.Model):
         return self.md.reset().convert(self.content)
 
     def get_synopsis(self):
+        """
+        生成文章摘要
+        """
         synopsis = []
         word_num = 0
+        code_area = False
         for line in self.content.splitlines(keepends=True):
-            if re.match(r'\w+|[\u4e00-\u9fa5]+', line):
+            if line.startswith('```'):      # 跳过代码段
+                code_area = not code_area
+            if code_area:
+                continue
+
+            if re.match(r'\w+', line):
                 synopsis.append(line)
-                word_num += len(line)
-            if word_num > 100 or len(synopsis) > 4:
+                word_num += len(re.findall(r'[A-Za-z0-9:/.]+|[\u4e00-\u9fa5]', line))  # 计数，网址等算为一个字
+            if word_num > 30 or len(synopsis) > 3:  # 30字以上或4个段落
                 break
 
         synopsis = ''.join(synopsis)
