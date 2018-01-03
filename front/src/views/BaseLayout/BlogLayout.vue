@@ -16,6 +16,7 @@
               </router-link>
               <router-link :to="{name: 'aboutMe'}">
                 <MenuItem name="3">
+
                     <Icon type="ios-information"></Icon>
                     关于
                 </MenuItem>
@@ -26,7 +27,7 @@
         <router-view></router-view>
 
         <div class="bottom">
-          <img src="../assets/logo.png" class="layout-logo" alt="某中二的黑科技研究中心">
+          <img src="../../assets/logo.png" class="layout-logo" alt="某中二的黑科技研究中心">
           <div class="layout-copy">某中二的黑科技研究中心</div>
         </div>
     </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <img src="../../assets/building.jpg" class="poster"></img>
+    <img src="../../assets/building.jpg" class="poster" />
   </div>
 </template>
 

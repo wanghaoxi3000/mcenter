@@ -7,7 +7,7 @@
 
         <template v-for="(item, index) in blogItem" >
           <div class="blog-item" :class="index != 0 ? 'blog-item-li' : ''" :key="item.index">
-            <document-item :itemInfo="item"></document-item>
+            <BlogItem :itemInfo="item"></BlogItem>
           </div>
         </template>
 
@@ -18,8 +18,8 @@
 
       <Col :xs="{offset: 1, span: 22}"
         :sm="{offset:1, span:4}">
-        <item-list title="文章分类" :items="categories" @select="categorySelect" :active="curCategory"></item-list>
-        <item-list title="文章归档" :items="archives" @select="archiveSelect" :active="curArchive"></item-list>
+        <BlogInfoList title="文章分类" :items="categories" @select="categorySelect" :active="curCategory"></BlogInfoList>
+        <BlogInfoList title="文章归档" :items="archives" @select="archiveSelect" :active="curArchive"></BlogInfoList>
       </Col>
     </Row>
     </keep-alive>
@@ -28,13 +28,13 @@
 
 <script>
 import { articles, categories, archives } from '../../api/documents'
-import DocumentItem from './DocumentItem'
-import itemList from './itemList'
+import BlogItem from './components/BlogItem.vue'
+import BlogInfoList from './components/BlogInfoList.vue'
 
 export default {
   components: {
-    DocumentItem,
-    itemList
+    BlogItem,
+    BlogInfoList
   },
   data() {
     return {
@@ -95,13 +95,13 @@ export default {
 
     async getArchivesList() {
       const { data } = await archives()
-      this.archiveList = data.map((val => {
+      this.archiveList = data.map(val => {
         const time = val.record.split('-')
         return {
           name: `${time[0]}年${time[1]}日 (${val.num})`,
           slug: `${time[0]}${time[1]}`
         }
-      }))
+      })
     },
 
     categorySelect(index) {

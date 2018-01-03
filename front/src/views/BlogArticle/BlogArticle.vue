@@ -24,7 +24,7 @@ import { articleDetail } from '../../api/documents'
 export default {
   data() {
     return {
-      title: '标题',
+      title: '',
       category: '',
       categorySlug: '',
       timestamp: '',
