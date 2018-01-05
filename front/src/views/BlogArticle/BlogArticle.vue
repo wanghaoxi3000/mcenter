@@ -8,7 +8,7 @@
           <router-link class="text-link" :to="{name: 'blog', query: { category: categorySlug }}">
             {{ category }}
           </router-link>
-          &nbsp&nbsp
+          &nbsp;&nbsp;
           <Icon type="ios-clock" /> {{ timestamp }}
           <br>
           <article class="markdown-body" v-html="content"></article>
