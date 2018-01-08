@@ -7,6 +7,7 @@ import PageBuilding from '@/views/ErrorPage/PageBuilding.vue'
 import Page404 from '@/views/ErrorPage/Page404.vue'
 
 import AdminLayout from '@/views/BaseLayout/AdminLayout.vue'
+import AdminIndex from '@/views/AdminIndex/AdminIndex.vue'
 
 Vue.use(Router)
 
@@ -42,7 +43,11 @@ export default new Router({
 
     {
       path: '/admin',
-      component: AdminLayout
+      component: AdminLayout,
+      redirect: '/admin/index',
+      children: [
+        { path: 'index', name: 'adminIndex', component: AdminIndex }
+      ]
     },
 
     { path: '*', redirect: '/404', hidden: true }
