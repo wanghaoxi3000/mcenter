@@ -78,7 +78,9 @@ export default {
   },
   methods: {
     getArticleList(page = 1) {
-      articles(page, this.$route.query.category, this.$route.query.archive).then(res => {
+      const limit = 5   // 每页显示条数
+      const offset = limit * (page - 1)
+      articles(limit, offset, this.$route.query.category, this.$route.query.archive).then(res => {
         this.blogItem = res.data.results
         this.blogCount = res.data.count
         this.currentPage = Number(page)
