@@ -8,8 +8,12 @@
       :data="value">
     </Table>
 
-
-    <Page :total="valueNum" show-sizer :placement="'top'" class-name="page-center"></Page>
+    <Page
+      :total="valueNum"
+      :placement="'top'"
+      @on-change="handlePageChange"
+      class-name="page-center">
+    </Page>
 
   </div>
 </template>
@@ -151,6 +155,11 @@ export default {
           }
         }
       })
+    },
+
+    // 处理翻页的信号
+    handlePageChange(val) {
+      this.$emit('page-change', val)
     }
   }
 }

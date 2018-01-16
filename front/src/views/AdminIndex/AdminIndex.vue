@@ -4,7 +4,8 @@
       :columnsList="blogTable"
       :value="tableData"
       :valueNum="valueCount"
-      :loading="loading">
+      :loading="loading"
+      @page-change="handlePageChange">
     </TableArticle>
   </div>
 </template>
@@ -22,6 +23,8 @@ export default {
       loading: false,   // 表格等待标致
       tableData: [],    // 表格数据
       valueCount: 0,    // 数据总数
+      pageLimit: 10,    // 每页显示条数
+      pageNum: 1,       // 当前页
       blogTable: [      // 表格列数据
         {
           type: 'selection',
@@ -70,29 +73,6 @@ export default {
           key: 'handle',
           handle: ['delete']
         }
-      ],
-      data1: [
-        {
-          title: '博客文章',
-          source: '原创',
-          category: '类别',
-          time: '2018-01-08',
-          num: '10'
-        },
-        {
-          title: '博客文章2',
-          source: '原创',
-          category: '类别',
-          time: '2018-01-08',
-          num: '10'
-        },
-        {
-          title: '博客文章3',
-          source: '原创',
-          category: '类别',
-          time: '2018-01-08',
-          num: '10'
-        }
       ]
     }
   },
@@ -103,7 +83,8 @@ export default {
     // 获取博客列表数据
     async fetchData() {
       this.loading = true
-      const { data } = await articles(10)
+      let offset = (this.pageNum - 1) * this.pageLimit
+      const { data } = await articles(this.pageLimit, offset)
       this.valueCount = data.count
       this.tableData = data.results.map(item => {
         if (item.hasOwnProperty('own')) {
@@ -112,6 +93,12 @@ export default {
         return item
       })
       this.loading = false
+    },
+
+    // 翻页拉取数据
+    handlePageChange(val) {
+      this.pageNum = val
+      this.fetchData()
     }
   }
 }
