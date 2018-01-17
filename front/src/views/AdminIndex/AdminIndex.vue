@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div class="admin-index-top-btn">
+      <Button type="primary">发布文章</Button>
+      <Button type="error" :disabled="!selectItem">删除所选</Button>
+    </div>
+
     <TableArticle
       :columnsList="blogTable"
       :value="tableData"
@@ -20,12 +25,13 @@ export default {
   },
   data() {
     return {
-      loading: false,   // 表格等待标致
-      tableData: [],    // 表格数据
-      valueCount: 0,    // 数据总数
-      pageLimit: 10,    // 每页显示条数
-      pageNum: 1,       // 当前页
-      blogTable: [      // 表格列数据
+      loading: false,     // 表格等待标致
+      tableData: [],      // 表格数据
+      valueCount: 0,      // 数据总数
+      selectItem: false,  // 是否处于选中状态
+      pageLimit: 10,      // 每页显示条数
+      pageNum: 1,         // 当前页
+      blogTable: [        // 表格列数据
         {
           type: 'selection',
           width: 60,
@@ -104,6 +110,11 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.admin-index-top-btn {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+  width: 170px;
+}
 </style>
