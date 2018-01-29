@@ -33,7 +33,7 @@
           <DropdownMenu style="width: 200px;" slot="list">
             <DropdownItem :name="item.children[0].name" :key="'d' + index">
               <Icon :type="item.icon"></Icon>
-              <span style="padding-left:10px;">{{ itemTitle(item.children[0]) }}</span>
+              <span style="padding-left:10px;">{{ item.children[0] }}</span>
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>

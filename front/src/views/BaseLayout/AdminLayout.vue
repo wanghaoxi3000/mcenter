@@ -44,6 +44,7 @@
 
 <script>
 import AdminShrinkableMenu from './components/AdminShrinkableMenu'
+import { sidebarRouter } from '@/router/router'
 
 export default {
   components: {
@@ -57,7 +58,7 @@ export default {
   },
   computed: {
     menuList() {
-      return []
+      return sidebarRouter
     }
   },
   methods: {
